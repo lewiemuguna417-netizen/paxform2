@@ -7,7 +7,7 @@ import { componentTagger } from "lovable-tagger";
 export default defineConfig(({ mode }) => ({
   server: {
     host: "0.0.0.0",
-    port: Number(process.env.VITE_PORT) || 3000,
+    port: Number(process.env.VITE_PORT) || 8080,
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {
@@ -22,9 +22,20 @@ export default defineConfig(({ mode }) => ({
     minify: "esbuild",
     rollupOptions: {
       output: {
-        manualChunks: undefined,
+        manualChunks: (id) => {
+          // Put vendor dependencies in a separate chunk
+          if (id.includes('node_modules')) {
+            if (id.includes('@tanstack/react-query')) {
+              return 'react-query';
+            }
+            if (id.includes('react-router') || id.includes('react')) {
+              return 'react-vendor';
+            }
+            return 'vendor';
+          }
+        },
       },
     },
   },
-  base: process.env.NODE_ENV === 'production' ? './' : '/',
+  base: '/',
 }));

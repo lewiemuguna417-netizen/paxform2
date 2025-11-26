@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 // Create axios instance with default config
 const api: AxiosInstance = axios.create({
-  baseURL: `${import.meta.env.VITE_BACKEND_URL || 'https://datascrapex-job3-1070255625225.us-central1.run.app'}/api`,
+  baseURL: `${import.meta.env.VITE_BACKEND_URL || 'https://datascrapex-job3-1070255625225.us-central1.run.app'}/api/v1`,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
